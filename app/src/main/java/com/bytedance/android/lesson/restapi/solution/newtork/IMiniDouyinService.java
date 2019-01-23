@@ -1,5 +1,8 @@
 package com.bytedance.android.lesson.restapi.solution.newtork;
 
+import android.support.v4.provider.FontsContractCompat;
+
+import com.bytedance.android.lesson.restapi.solution.bean.Feed;
 import com.bytedance.android.lesson.restapi.solution.bean.FeedResponse;
 import com.bytedance.android.lesson.restapi.solution.bean.PostVideoResponse;
 
@@ -17,5 +20,17 @@ import retrofit2.http.Query;
  */
 public interface IMiniDouyinService {
     // TODO-C2 (7) Implement your MiniDouyin PostVideo Request here, url: (POST) http://10.108.10.39:8080/minidouyin/video
+    @POST("minidouyin/video/")
+    @Multipart
+    Call<PostVideoResponse> creatVideo(
+            @Query("student_id") String id,
+            @Query("user_name")  String name,
+            @Part MultipartBody.Part file1,
+            @Part MultipartBody.Part file2
+    );
+
+
     // TODO-C2 (8) Implement your MiniDouyin Feed Request here, url: http://10.108.10.39:8080/minidouyin/feed
+    @GET("minidouyin/feed/")
+    Call<FeedResponse> getFeed();
 }

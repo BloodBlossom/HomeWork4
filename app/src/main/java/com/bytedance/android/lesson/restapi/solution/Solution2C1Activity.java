@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,9 +13,17 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bytedance.android.lesson.restapi.solution.bean.Cat;
+import com.bytedance.android.lesson.restapi.solution.newtork.ICatService;
+import com.bytedance.android.lesson.restapi.solution.newtork.RetrofitManager;
+import com.bytedance.android.lesson.restapi.solution.utils.NetworkUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static android.support.v7.widget.RecyclerView.Adapter;
 import static android.support.v7.widget.RecyclerView.ViewHolder;
@@ -47,8 +56,8 @@ public class Solution2C1Activity extends AppCompatActivity {
                 ImageView iv = (ImageView) viewHolder.itemView;
 
                 // TODO-C1 (4) Uncomment these 2 lines, assign image url of Cat to this url variable
-//                String url = mCats.get(i).;
-//                Glide.with(iv.getContext()).load(url).into(iv);
+                String url = mCats.get(i).getUrl();
+                Glide.with(iv.getContext()).load(url).into(iv);
             }
 
             @Override public int getItemCount() {
@@ -63,13 +72,46 @@ public class Solution2C1Activity extends AppCompatActivity {
         }
     }
 
-    public void requestData(View view) {
+    public void requestData(View view) throws IOException {
         mBtn.setText(R.string.requesting);
         mBtn.setEnabled(false);
 
         // TODO-C1 (3) Send request for 5 random cats here, don't forget to use {@link retrofit2.Call#enqueue}
         // Call restoreBtn() and loadPics(response.body()) if success
         // Call restoreBtn() if failure
+
+        new Thread() {
+            @Override public void run() {
+                String url ="https://api.thecatapi.com";
+                Retrofit retrofit = RetrofitManager.get(url);
+                Call<List<Cat>> cat = retrofit.create(ICatService.class).getCat(5);
+                Response<List<Cat>> rCat = null;
+                try {
+                    rCat = cat.execute();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            restoreBtn();
+                        }
+                    });
+                }
+                final Response<List<Cat>> finalRcat = rCat;
+
+                runOnUiThread(new Runnable() {
+                    @Override public void run() {
+                        loadPics(finalRcat.body());
+                        Log.d("aaa","ok");
+                        restoreBtn();
+                    }
+                });
+
+            }
+        }.start();
+
 
     }
 
