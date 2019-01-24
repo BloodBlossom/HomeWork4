@@ -1,6 +1,8 @@
 package com.bytedance.android.lesson.restapi.solution;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +16,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Solution2C1(View view) {
-        startActivity(new Intent(this, Solution2C1Activity.class));
+        startActivity(new Intent(this ,Solution2C1Activity.class));
     }
 
     public void Solution2C2(View view) {
         startActivity(new Intent(this, Solution2C2Activity.class));
 
     }
+
 }

@@ -1,9 +1,11 @@
 package com.bytedance.android.lesson.restapi.solution;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +43,7 @@ public class Solution2C2Activity extends AppCompatActivity {
     private static final int PICK_IMAGE = 1;
     private static final int PICK_VIDEO = 2;
     private static final String TAG = "Solution2C2Activity";
+    private static final int REQUEST_CODE_ADD = 1002;
     private RecyclerView mRv;
     private List<Feed> mFeeds = new ArrayList<>();
     public Uri mSelectedImage;
@@ -89,7 +92,7 @@ public class Solution2C2Activity extends AppCompatActivity {
                 ImageView imageView = new ImageView(viewGroup.getContext());
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 imageView.setAdjustViewBounds(true);
-                return new Solution2C1Activity.MyViewHolder(imageView);
+                return new MyViewHolder(imageView);
             }
 
             @Override
@@ -99,12 +102,31 @@ public class Solution2C2Activity extends AppCompatActivity {
                 // TODO-C2 (10) Uncomment these 2 lines, assign image url of Feed to this url variable
                 String url = mFeeds.get(i).getIurl();
                 Glide.with(iv.getContext()).load(url).into(iv);
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Solution2C2Activity.this,Solution2Q2Activity.class);
+                        intent.putExtra("VIDEO_URL",mFeeds.get(i).getIurl());
+                        intent.putExtra("USER_ID",mFeeds.get(i).getId());
+                        intent.putExtra("USER_NAME",mFeeds.get(i).getName());
+
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override public int getItemCount() {
                 return mFeeds.size();
             }
         });
+    }
+
+    private class MyViewHolder extends RecyclerView.ViewHolder{
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
     }
 
     public void chooseImage() {
@@ -237,4 +259,5 @@ public class Solution2C2Activity extends AppCompatActivity {
         mBtnRefresh.setText(R.string.refresh_feed);
         mBtnRefresh.setEnabled(true);
     }
+
 }
