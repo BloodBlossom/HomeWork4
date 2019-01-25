@@ -76,7 +76,7 @@ public class Solution2Q2Activity extends AppCompatActivity implements MediaPlaye
     public void  stop(View v){
         if(mediaPlayer != null){
             mediaPlayer.stop();
-            state = STOPING;
+           // state = STOPING;
         }
     }
 
@@ -118,7 +118,7 @@ public class Solution2Q2Activity extends AppCompatActivity implements MediaPlaye
             mediaPlayer.pause();
             state = PAUSING;
 
-            isPlayingVideo = true;
+            isPlayingVideo = false;
         }
     }
 

@@ -107,7 +107,7 @@ public class Solution2C2Activity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(Solution2C2Activity.this,Solution2Q2Activity.class);
-                        intent.putExtra("VIDEO_URL",mFeeds.get(i).getIurl());
+                        intent.putExtra("VIDEO_URL",mFeeds.get(i).getVurl());
                         intent.putExtra("USER_ID",mFeeds.get(i).getId());
                         intent.putExtra("USER_NAME",mFeeds.get(i).getName());
 
